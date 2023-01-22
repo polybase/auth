@@ -27,16 +27,16 @@ export function EmailCode () {
 
   return (
     <Layout title='Enter email code'>
-      <Stack spacing={3}>
-        <Stack>
+      <Stack spacing={6}>
+        <Stack fontSize='lg'>
           <Text>
-            Enter the code sent to:
+            Enter the code sent to <Text as='b' fontSize='xl'>{email}</Text>
           </Text>
-          <Text fontWeight='bold'>
-            {email}
+          <Text fontWeight='bold' fontSize='xl'>
+
           </Text>
         </Stack>
-        <Input size='lg' />
+        <Input size='lg' placeholder={`Enter code sent to ${email}`} />
         <Button size='lg'>Continue</Button>
       </Stack>
     </Layout>

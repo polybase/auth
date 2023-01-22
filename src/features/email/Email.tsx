@@ -42,6 +42,7 @@ export function Email () {
           <Button
             type='submit'
             size='lg'
+            isLoading={sendEmail.loading}
           >
             Continue
           </Button>
