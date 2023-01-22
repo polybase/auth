@@ -49,7 +49,7 @@ export default requestHandler('POST', async (request: VercelRequest) => {
   ])
 
   // Get userId (sha256 of email)
-  const userId = crypto.createHash('sha256').update(email).digest('base64')
+  const userId = crypto.createHash('sha256').update(email).digest('hex')
 
   // Does user already exist?
   const user = await polybase.collection('email').record(userId).get().catch((e) => {
