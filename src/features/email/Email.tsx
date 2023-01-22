@@ -17,7 +17,7 @@ export function Email () {
     e.preventDefault()
 
     // Send email
-    await axios.post('/api/email', {
+    await axios.post('/api/email/code', {
       email,
     })
 
