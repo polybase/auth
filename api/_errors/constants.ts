@@ -24,5 +24,8 @@ export const ERROR_REASONS = {
   'too-many-requests': { code: 'resource-exhausted', message: 'Too many requests' },
   'method-not-allowed': { code: 'method-not-allowed', message: 'Invalid method' },
 
-  'invalid-email': { code: 'invalid-argument', message: 'Invalid email address' },
+  'auth/invalid-email': { code: 'invalid-argument', message: 'Invalid email address' },
+  'auth/invalid-email-code': { code: 'failed-precondition', message: 'Email code is invalid or has expired' },
+  'auth/too-many-code-requests': { code: 'resource-exhausted', message: 'Too many codes requested, try again in 60 seconds' },
+  'auth/too-many-code-verifications': { code: 'resource-exhausted', message: 'Too many codes requested, try again in 5 minutes' },
 }
