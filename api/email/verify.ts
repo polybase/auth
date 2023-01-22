@@ -1,9 +1,17 @@
 import type { VercelRequest } from '@vercel/node'
+import crypto from 'crypto'
+import { secp256k1, encodeToString, aescbc, decodeFromString } from '@polybase/util'
 import * as jwt from '../_util/jwt'
 import { requestHandler } from '../_util/requestHandler'
 import { redis } from '../_config/redis'
+import { polybase } from '../_config/polybase'
 import { REDIS_EMAIL_CODE_PREFIX, EMAIL_CODE_VERIFY_THROTTLE, EMAIL_CODE_VERIFY_MAX } from './_constants'
 import { createError } from '../_errors'
+import { PolybaseError } from '@polybase/client'
+
+const {
+  ENCRYPTION_KEY = '',
+} = process.env
 
 export default requestHandler('POST', async (request: VercelRequest) => {
   const { code, email } = request.body
@@ -26,7 +34,7 @@ export default requestHandler('POST', async (request: VercelRequest) => {
   if (redisCode !== code) {
     // Set failed counter (if not already set)
     await redis.set(`${REDIS_EMAIL_CODE_PREFIX}:${email}:failed`, 0,
-      'EX', EMAIL_CODE_VERIFY_THROTTLE, 'NX', 'KEEPTTL' as any)
+      'EX', EMAIL_CODE_VERIFY_THROTTLE, 'NX')
 
     // Incr failed counter
     await redis.incr(`${REDIS_EMAIL_CODE_PREFIX}:${email}:failed`)
@@ -35,10 +43,35 @@ export default requestHandler('POST', async (request: VercelRequest) => {
   }
 
   // Delete the used code
-  await redis.del(`${REDIS_EMAIL_CODE_PREFIX}:${email}`)
+  await Promise.all([
+    redis.del(`${REDIS_EMAIL_CODE_PREFIX}:${email}`),
+    redis.del(`${REDIS_EMAIL_CODE_PREFIX}:${email}:request`),
+  ])
+
+  // Get userId (sha256 of email)
+  const userId = crypto.createHash('sha256').update(email).digest('base64')
 
   // Does user already exist?
-  const userId = '123'
+  const user = await polybase.collection('email').record(userId).get().catch((e) => {
+    if (e instanceof PolybaseError && e.reason === 'record/not-found') {
+      return null
+    }
+    throw e
+  })
+  if (!user) {
+    // Generate public/private key pair
+    const { publicKey, privateKey } = await secp256k1.generateKeyPair()
+
+    // Encrypt private key
+    const encryptedEmail = await aescbc.symmetricEncryptToEncoding(
+      decodeFromString(ENCRYPTION_KEY, 'hex'),
+      encodeToString(privateKey, 'hex'),
+      'hex',
+    )
+
+    // Create the user
+    await polybase.collection('email').create([userId, encodeToString(publicKey, 'hex'), encryptedEmail])
+  }
 
   // Create the token for user
   const token = jwt.sign({

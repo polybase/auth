@@ -2659,15 +2659,14 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
-"@polybase/client@^0.3.19":
-  version "0.3.19"
-  resolved "https://registry.yarnpkg.com/@polybase/client/-/client-0.3.19.tgz#b68e0fd97ce534a57e5513479c1d116f0acf30bd"
-  integrity sha512-YCXoiWs8PC2Tx58eZFGbb/zI4g8iXWCA/9z9S8VVBBJIFjZTbqcsfViwZJ/4BH6BNNfX9Qu1T7fKu61ztCeuvA==
+"@polybase/client@^0.3.22":
+  version "0.3.22"
+  resolved "https://registry.yarnpkg.com/@polybase/client/-/client-0.3.22.tgz#eaec3cb2e09e4f04f293fc1a568745928d495a8f"
+  integrity sha512-oGc3eLwdPHFUSme+cO++N3urUPpdaKdLuKLWcI2Is19lg6rhtznjygzUqOuTiT3Y2vjOQZmmlXghV66XwJyCQQ==
   dependencies:
-    "@polybase/eth" "^0.3.13"
+    "@polybase/eth" "^0.3.22"
     "@polybase/polylang" "0.4.4"
     axios "0.27.2"
-    lodash.merge "^4.6.2"
 
 "@polybase/eth@^0.3.11":
   version "0.3.12"
@@ -2678,14 +2677,14 @@
     "@ethersproject/strings" "^5.7.0"
     "@polybase/util" "^0.3.12"
 
-"@polybase/eth@^0.3.13":
-  version "0.3.13"
-  resolved "https://registry.yarnpkg.com/@polybase/eth/-/eth-0.3.13.tgz#782d35ce480713b08eba293b961a0eb56560bf38"
-  integrity sha512-PAe3MxMAXh+x2TNu4p6EqruTnfsZGLV0gVlgdYaSGr+2Lq8Z894boXWL4UHxMHxGTuKNr+UoB/FtNK1tq+Qg/A==
+"@polybase/eth@^0.3.22":
+  version "0.3.22"
+  resolved "https://registry.yarnpkg.com/@polybase/eth/-/eth-0.3.22.tgz#54d45ba727990fd39865f329d699a5239dc4cc4d"
+  integrity sha512-GQBF2hl/jzfbJOm/E7466FlP2BUvQXwsjTNM40js+KfLMPWtVxg0YPTIZVugdAJpcpSzEQmeLUusxA3vQqs+VA==
   dependencies:
     "@ethersproject/keccak256" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
-    "@polybase/util" "^0.3.13"
+    "@polybase/util" "^0.3.22"
 
 "@polybase/polylang@0.4.4":
   version "0.4.4"
@@ -2710,10 +2709,10 @@
     tweetnacl "^1.0.3"
     tweetnacl-util "^0.15.1"
 
-"@polybase/util@^0.3.13":
-  version "0.3.13"
-  resolved "https://registry.yarnpkg.com/@polybase/util/-/util-0.3.13.tgz#6c1dc4687caa64f6cfdcc708d8fef20db6c655ba"
-  integrity sha512-scG3eNeIt4xuMEjdJRKI5FIf+gcLtU0l5KUsM2BpAZjgcLKLPd6pH0dpAhGzZYQQPSoLu/CoiEbkPklJVssrWA==
+"@polybase/util@^0.3.22":
+  version "0.3.22"
+  resolved "https://registry.yarnpkg.com/@polybase/util/-/util-0.3.22.tgz#b26ac31ff14901f1ed33022b9172e882d8948df8"
+  integrity sha512-Zp2gOQW+Izb5pAuQhmUJ5jqciniIJrIlB/Fn3u+DGSTzW0Z9cp2cBp4WEDq4s4nQSHpQimHj9OvFMozbnNV9/A==
   dependencies:
     "@ethersproject/bytes" "^5.7.0"
     "@ethersproject/signing-key" "^5.7.0"
@@ -8184,6 +8183,11 @@ jest@^27.4.3:
     "@jest/core" "^27.5.1"
     import-local "^3.0.2"
     jest-cli "^27.5.1"
+
+js-cookie@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-3.0.1.tgz#9e39b4c6c2f56563708d7d31f6f5f21873a92414"
+  integrity sha512-+0rgsUXZu4ncpPxRL+lNEptWMOWl9etvPHc/koSRp6MPwpRYAhmk0dUG00J4bxVV3r9uUzfo24wW0knS07SKSw==
 
 js-sha3@0.8.0:
   version "0.8.0"

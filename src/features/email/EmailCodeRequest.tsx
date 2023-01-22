@@ -10,19 +10,19 @@ import { Layout } from '../Layout'
 import { useNavigate } from 'react-router-dom'
 import { useAsyncCallback } from 'modules/common/useAsyncCallback'
 
-export function Email () {
+export function EmailCodeRequest () {
   const [email, setEmail] = useState('')
   const navigate = useNavigate()
   const sendEmail = useAsyncCallback(async (e) => {
     e.preventDefault()
 
-    // Send email
+    // Send email code request
     await axios.post('/api/email/code', {
       email,
     })
 
     // Navigate to next route
-    navigate('/email/code', {
+    navigate('/email/verify', {
       state: {
         email,
       },

@@ -1,6 +1,7 @@
 import { useAsyncCallback as useAsyncCallbackBase, UseAsyncCallbackOptions } from 'react-async-hook'
 import { useToast } from '@chakra-ui/react'
 import * as Sentry from '@sentry/react'
+import { AxiosError } from 'axios'
 
 export type ExtendedOptions<R> = UseAsyncCallbackOptions<R> & {
   logError?: boolean
@@ -27,7 +28,7 @@ export function useAsyncCallback <R = unknown, Args extends any[] = any[]> (asyn
       toast({
         status: 'error',
         title: errorTitle,
-        description: e?.message,
+        description: e instanceof AxiosError ? e.response?.data.error?.message ?? e?.message : e?.message,
         isClosable: true,
         duration: 9000,
       })

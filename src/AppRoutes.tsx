@@ -2,11 +2,14 @@ import { useEffect } from 'react'
 import { Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom'
 import ReactGA from 'react-ga'
 import { Home } from './features/Home'
-import { Email } from 'features/email/Email'
-import { EmailCode } from 'features/email/EmailCode'
+import { EmailCodeRequest } from 'features/email/EmailCodeRequest'
+import { EmailCodeVerify } from 'features/email/EmailCodeVerify'
+import { Success } from 'features/Success'
+import { useIsLoggedIn } from 'features/auth/useIsLoggedIn'
+import { PersonalSign } from 'features/sign/PersonalSign'
 
 export default function AppRouter () {
-  // const [isLoggedIn, isLoggedInLoading] = useIsLoggedIn()
+  const [isLoggedIn, isLoggedInLoading] = useIsLoggedIn()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -15,15 +18,23 @@ export default function AppRouter () {
     ReactGA.pageview(location.pathname)
   }, [location.pathname])
 
-  // useEffect(() => {
-  //   if (!isLoggedIn && !isLoggedInLoading && location.pathname.startsWith('/d')) return navigate('/')
-  // }, [location.pathname, location.state, navigate, isLoggedIn, isLoggedInLoading])
+  useEffect(() => {
+    if (isLoggedInLoading) return
+
+    // If success, but not logged in, send to start of flow
+    if (!isLoggedIn && location.pathname.startsWith('/success')) return navigate('/')
+
+    // If sent to root, confirm login
+    if (isLoggedIn && location.pathname === '/') return navigate('/success')
+  }, [location.pathname, location.state, navigate, isLoggedIn, isLoggedInLoading])
 
   return (
     <Routes>
       <Route path='/' element={<Home />} />
-      <Route path='/email' element={<Email />} />
-      <Route path='/email/code' element={<EmailCode />} />
+      <Route path='/email' element={<EmailCodeRequest />} />
+      <Route path='/email/verify' element={<EmailCodeVerify />} />
+      <Route path='/sign/personal' element={<PersonalSign />} />
+      <Route path='/success' element={<Success />} />
       <Route path='/*' element={<Navigate to='/' />} />
     </Routes>
   )
