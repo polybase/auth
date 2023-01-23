@@ -1,7 +1,14 @@
 
 import type { VercelRequest, VercelResponse } from '@vercel/node'
+import * as Sentry from '@sentry/node'
 import { ApiError } from '../_errors/ApiError'
 import { createError } from '../_errors/createError'
+
+Sentry.init({
+  dsn: process.env.REACT_APP_SENTRY_DSN,
+  environment: process.env.ENV_NAME,
+  tracesSampleRate: 0.01,
+})
 
 export function requestHandler (method: 'GET'|'POST', fn: (request: VercelRequest, response: VercelResponse) => Promise<any>) {
   return async (request: VercelRequest, response: VercelResponse)  => {
@@ -22,7 +29,8 @@ export function requestHandler (method: 'GET'|'POST', fn: (request: VercelReques
         })
       }
 
-      if (process.env.NODE_ENV !== 'production' || error.error?.log) {
+      if ((error.error?.statusCode && error.error?.statusCode >= 500) || error.error?.log) {
+        Sentry.captureException(error)
         console.log(originalError)
       }
 
