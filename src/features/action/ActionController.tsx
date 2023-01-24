@@ -1,5 +1,4 @@
 import { useAuth } from 'features/auth/useAuth'
-// import { usePenpal } from 'features/penpal/usePenpal'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAction } from './useAction'
@@ -10,38 +9,18 @@ export interface ActionControllerProps {
 
 export function ActionController ({ children }: ActionControllerProps) {
   const { action } = useAction()
-  const auth = useAuth()
+  const { auth, loading } = useAuth()
   const navigate = useNavigate()
-  // const { hide } = usePenpal
 
   useEffect(() => {
-    if (!action) {
-      return
-      // return hide()
-    }
+    if (!action || loading || !auth) return
 
-    if (!auth) {
-      navigate('/')
-    }
-
-    const login = () => {
-      if (auth) {
-        navigate('/success')
-      }
-    }
-
-    const sign = () => {
-      if (auth) {
-        navigate('/sign/personal')
-      }
-    }
-
-    // New action, map actions to a starting point
+    // Authenticated, move to next step
     switch (action.type) {
-      case 'login': return login()
-      case 'sign': return sign()
+      case 'signIn': return  navigate('/success')
+      case 'ethPersonalSign': return navigate('/sign/personal')
     }
-  }, [action, auth, navigate])
+  }, [action, auth, loading, navigate])
 
   return (
     <>{children}</>

@@ -8,14 +8,14 @@ import { Layout } from './Layout'
 import { useAction } from './action/useAction'
 
 export function Success () {
-  const { logout } = useAuth()
+  const { auth, logout } = useAuth()
   const { action } = useAction()
 
-  useEffect(() => {
-    setTimeout(() => {
-      action?.resolve()
-    }, 1000)
-  }, [action, action?.resolve])
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     action?.resolve()
+  //   }, 1000)
+  // }, [action, action?.resolve])
 
   return (
     <Layout title='Success'>

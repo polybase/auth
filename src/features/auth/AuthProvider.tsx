@@ -39,17 +39,18 @@ export function AuthProvider ({ children, storagePrefix = 'polybase.auth.', doma
     Cookies.set(authPath, JSON.stringify(auth), { domain, sameSite: 'none', secure: true })
     setAuth(auth)
     if (token) {
-      Cookies.set(tokenPath, token)
+      Cookies.set(tokenPath, token, { domain, sameSite: 'none', secure: true })
       setToken(token)
     }
   }, [authPath, domain, tokenPath])
 
   const logout = useCallback(async () => {
     Cookies.remove(authPath, { domain, sameSite: 'none', secure: true })
+    Cookies.remove(tokenPath, { domain, sameSite: 'none', secure: true })
     posthog.reset()
     Sentry.setUser(null)
     setAuth(null)
-  }, [authPath, domain])
+  }, [authPath, tokenPath, domain])
 
   useEffect(() => {
     if (auth) return

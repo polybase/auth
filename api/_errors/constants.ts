@@ -17,6 +17,7 @@ export const ERROR_CODES = {
 
 export const ERROR_REASONS = {
   'not-found': { code: 'not-found', message: 'Not found' },
+  'unauthenticated': { code: 'unauthenticated', message: 'Authentication missing' },
   'server-error': { code: 'internal', message: 'An internal error occured' },
   'required-fields': { code: 'invalid-argument', message: 'Required field is missing' },
   'invalid-argument': { code: 'invalid-argument', message: 'Invalid arguments' },
@@ -28,4 +29,5 @@ export const ERROR_REASONS = {
   'auth/invalid-email-code': { code: 'failed-precondition', message: 'Email code is invalid or has expired' },
   'auth/too-many-code-requests': { code: 'resource-exhausted', message: 'Too many codes requested, try again in 60 seconds' },
   'auth/too-many-code-verifications': { code: 'resource-exhausted', message: 'Too many codes requested, try again in 5 minutes' },
+  'auth/empty-signature-message': { code: 'invalid-argument', message: 'Cannot create signature with empty message' },
 }

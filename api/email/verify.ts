@@ -63,18 +63,26 @@ export default requestHandler('POST', async (request: VercelRequest) => {
     const { publicKey, privateKey } = await secp256k1.generateKeyPair()
 
     // Encrypt private key
-    const encryptedEmail = await aescbc.symmetricEncryptToEncoding(
+    const encryptedPvKey = await aescbc.symmetricEncryptToEncoding(
       decodeFromString(ENCRYPTION_KEY, 'hex'),
       encodeToString(privateKey, 'hex'),
       'hex',
     )
 
+    // Encrypt email
+    const encryptedEmail = await aescbc.symmetricEncryptToEncoding(
+      decodeFromString(ENCRYPTION_KEY, 'hex'),
+      encodeToString(email, 'hex'),
+      'hex',
+    )
+
     // Create the user
-    await polybase.collection('email').create([userId, encodeToString(publicKey, 'hex'), encryptedEmail])
+    await polybase.collection('email').create([userId, encryptedEmail, encryptedPvKey])
   }
 
   // Create the token for user
-  const token = jwt.sign({
+  const token = await jwt.sign({
+    type: 'email',
     userId,
   })
 

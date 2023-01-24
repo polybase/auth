@@ -2,7 +2,7 @@ import { createContext, useCallback, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export interface ActionRequest {
-  type: 'sign'|'login'
+  type: 'ethPersonalSign'|'signIn'
   data: any
 }
 
@@ -36,11 +36,18 @@ export function ActionProvider ({ children }: ActionProviderProps) {
     if (action) {
       action.reject(new Error('Action cancelled by user'))
     }
+
+    navigate('/')
+
     // Return promise of new action
     return new Promise((resolve, reject) => {
       setAction({
         ...newAction,
-        resolve,
+        resolve: (val: any) => {
+          setAction(null)
+          navigate('/')
+          resolve(val)
+        },
         response: null,
         reject: (e: Error) => {
           setAction(null)
