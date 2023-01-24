@@ -1,30 +1,26 @@
-import { useEffect } from 'react'
 import {
   Stack,
+  Button,
   Heading,
-  Center,
 } from '@chakra-ui/react'
-import tick from 'img/tick.svg'
+import { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from './auth/useAuth'
 import { Layout } from './Layout'
-import { useAction } from './action/useAction'
 
-export function Success () {
-  const { auth } = useAuth()
-  const { action } = useAction()
+export function Connected () {
+  const { auth, loading, logout } = useAuth()
+  const navigate = useNavigate()
 
   useEffect(() => {
-    setTimeout(() => {
-      action?.resolve(auth)
-    }, 2000)
-  }, [action, action?.resolve, auth])
+    if (!auth && !loading) {
+      navigate('/')
+    }
+  })
 
   return (
-    <Layout title='Signed In'>
+    <Layout title='Logged In'>
       <Stack spacing={6}>
-        <Center>
-          <img src={tick} alt='tick' width={84} />
-        </Center>
         <Stack>
           <Heading fontSize='md' lineHeight={1.7} color='bw.600'>
           You are logged in using <b>{auth?.type}</b> as:
@@ -33,6 +29,8 @@ export function Success () {
             {auth?.type === 'email' ? auth?.email : auth?.userId}
           </Heading>
         </Stack>
+        <Button size='lg' as={Link} to='/'>Swap Account</Button>
+        <Button size='lg' variant='outline' onClick={logout}>Logout</Button>
       </Stack>
     </Layout>
   )

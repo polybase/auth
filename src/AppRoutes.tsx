@@ -4,6 +4,7 @@ import { Home } from './features/Home'
 import { EmailCodeRequest } from 'features/email/EmailCodeRequest'
 import { EmailCodeVerify } from 'features/email/EmailCodeVerify'
 import { Metamask } from 'features/metamask/Metamask'
+import { Connected } from 'features/Connected'
 import { Success } from 'features/Success'
 import { useIsLoggedIn } from 'features/auth/useIsLoggedIn'
 import { PersonalSign } from 'features/sign/PersonalSign'
@@ -31,6 +32,7 @@ export default function AppRouter () {
       <Route path='/email/verify' element={<EmailCodeVerify />} />
       <Route path='/sign/personal' element={<PersonalSign />} />
       <Route path='/success' element={<Success />} />
+      <Route path='/connected' element={<Connected />} />
       <Route path='/*' element={<Navigate to='/' />} />
     </Routes>
   )

@@ -4,7 +4,6 @@ import {
   ButtonProps,
 } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
-import { requestAccounts } from '@polybase/eth'
 import metamask from 'img/metamask.svg'
 import email from 'img/email.svg'
 import { Layout } from './Layout'

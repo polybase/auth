@@ -48,7 +48,7 @@ export function Metamask () {
       <Stack spacing={6}>
         <Stack>
           <Heading fontSize='md' lineHeight={1.7} color='bw.600'>
-          You have connected to:
+          You are connected to:
           </Heading>
           <Heading fontSize='lg' color='bw.800'>
             {account}
