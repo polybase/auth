@@ -38,20 +38,18 @@ export function AuthProvider ({ children, storagePrefix = 'polybase.auth.', doma
   const login = useCallback(async (auth: AuthState, token?: string|null) => {
     Cookies.set(authPath, JSON.stringify(auth), { domain, sameSite: 'none', secure: true })
     setAuth(auth)
-    onAuthUpdate(auth)
     if (token) {
       Cookies.set(tokenPath, token)
       setToken(token)
     }
-  }, [authPath, domain, onAuthUpdate, tokenPath])
+  }, [authPath, domain, tokenPath])
 
   const logout = useCallback(async () => {
     Cookies.remove(authPath, { domain, sameSite: 'none', secure: true })
     posthog.reset()
     Sentry.setUser(null)
-    onAuthUpdate(null)
     setAuth(null)
-  }, [authPath, domain, onAuthUpdate])
+  }, [authPath, domain])
 
   useEffect(() => {
     if (auth) return
@@ -60,11 +58,14 @@ export function AuthProvider ({ children, storagePrefix = 'polybase.auth.', doma
     if (authStr) {
       const auth = JSON.parse(authStr)
       setAuth(auth)
-      onAuthUpdate(auth)
     }
     if (token) setToken(token)
     setLoading(false)
   }, [auth, authPath, onAuthUpdate, tokenPath])
+
+  useEffect(() => {
+    onAuthUpdate(auth)
+  }, [auth, onAuthUpdate])
 
   const value: AuthContextValue = useMemo(() => ({
     auth,
