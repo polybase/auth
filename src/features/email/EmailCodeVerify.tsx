@@ -30,7 +30,6 @@ export function EmailCodeVerify () {
     e.preventDefault()
 
     const code = codeRaw.replace(/\s/g, '')
-    console.log(Code)
 
     if (code.length !== 6 || isNaN(parseInt(code, 10))) {
       throw new Error('Invalid code, must be 6 numbers')
