@@ -4,16 +4,17 @@ import {
   Input,
   Text,
   Button,
+  Code,
 } from '@chakra-ui/react'
 import axios from 'axios'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAsyncCallback } from 'modules/common/useAsyncCallback'
 import { useAuth } from 'features/auth/useAuth'
 import { Layout } from '../Layout'
-import { useAction } from 'features/action/useAction'
+// import { useAction } from 'features/action/useAction'
 
 export function EmailCodeVerify () {
-  const [code, setCode] = useState('')
+  const [codeRaw, setCode] = useState('')
   const { login } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
@@ -27,6 +28,9 @@ export function EmailCodeVerify () {
 
   const onSubmit = useAsyncCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    const code = codeRaw.replace(/\s/g, '')
+    console.log(Code)
 
     if (code.length !== 6 || isNaN(parseInt(code, 10))) {
       throw new Error('Invalid code, must be 6 numbers')
