@@ -1,4 +1,5 @@
 import type { VercelRequest } from '@vercel/node'
+import * as useragent from 'useragent'
 import { customAlphabet } from 'nanoid'
 import { requestHandler } from '../_util/requestHandler'
 import { sendEmail } from '../_util/sendEmail'
@@ -43,12 +44,34 @@ export default requestHandler('POST', async (request: VercelRequest) => {
   ])
 
   // Send code in email to user
+  const codef = `${code.substring(0, 3)} ${code.substring(3)}`
+  const agent = useragent.parse(request.headers['user-agent']).toString()
+  const date = new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long', timeZone: 'America/New_York' }).format(new Date())
   await sendEmail('login', email, {
     subject: 'Login with email',
-    header: 'Login code for email',
-    title: 'Hi',
-    action_code_desc: 'Copy the code below to login:',
-    action_code: code,
+    header: `Login with Polybase code: ${codef}`,
+    title: 'Login with Polybase',
+    action_code: `${codef}`,
+    before: [
+      {
+        this: 'Copy the code below to login:',
+      },
+    ],
+    after: [
+      {
+        this: `This code expires in 15 minutes. Code was requested from <b>${agent}</b> at <b>${date}</b>.`,
+      },
+    ],
+    before_text: [
+      {
+        this: 'Copy the code below to login:',
+      },
+    ],
+    after_text: [
+      {
+        this: `This code expires in 15 minutes. Code was requested from ${agent} at ${date}.`,
+      },
+    ],
   })
 
   return {
