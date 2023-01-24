@@ -5,17 +5,17 @@ import {
 } from '@chakra-ui/react'
 import { useAuth } from './auth/useAuth'
 import { Layout } from './Layout'
-import { usePenpal } from './penpal/usePenpal'
+import { useAction } from './action/useAction'
 
 export function Success () {
   const { logout } = useAuth()
-  const { close } = usePenpal()
+  const { action } = useAction()
 
   useEffect(() => {
     setTimeout(() => {
-      close()
+      action?.resolve()
     }, 1000)
-  }, [close])
+  }, [action, action?.resolve])
 
   return (
     <Layout title='Success'>

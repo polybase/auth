@@ -1,22 +1,21 @@
 import { createContext, useEffect, useState, useMemo, useRef } from 'react'
 import { connectToParent, Connection } from 'penpal'
-import { useNavigate } from 'react-router-dom'
-
-export interface AuthState {
-  type: 'metamask'|'email'
-  email?: string|null
-  userId?: string|null
-  publicKey?: string|null
-}
+import { AuthState } from 'features/auth/types'
+import { useAction } from 'features/action/useAction'
+import { ActionRequest } from 'features/action/ActionProvider'
 
 export interface ParentFns {
   onAuthUpdate: (auth: AuthState|null) => Promise<void>
-  close: () => void
+  show: () => void
+  hide: () => void
 }
 
-export const PenpalContext = createContext<ParentFns>({
+export interface PenpalContextValue {
+  onAuthUpdate: (auth: AuthState|null) => Promise<void>
+}
+
+export const PenpalContext = createContext<PenpalContextValue>({
   onAuthUpdate: async () => {},
-  close: () => {},
 })
 
 export interface PenpalProviderProps {
@@ -24,47 +23,47 @@ export interface PenpalProviderProps {
 }
 
 export function PenpalProvider ({ children }: PenpalProviderProps) {
-  const [parent, setParent] = useState<Connection<ParentFns>|null>(null)
-  const navigate = useNavigate()
+  const parentRef = useRef<Connection<ParentFns>|null>(null)
+  const { setAction } = useAction()
+
   const ref = useRef({
-    ethPersonalSign: () => {
-      // Check user is logged in
-      console.log('ethPersonalSign2')
-    },
-    navigate: (to: string) => {
-      navigate(to)
+    action: async (action: ActionRequest) => {
+      const parent = await parentRef.current?.promise
+      await parent?.show()
+      try {
+        const res = await setAction(action)
+        await parent?.hide()
+        return res
+      } catch (e) {
+        await parent?.hide()
+        throw e
+      }
     },
   })
 
   useEffect(() => {
-    const connection = connectToParent<ParentFns>({
+    const parent = connectToParent<ParentFns>({
       // Methods child is exposing to parent.
       methods: {
-        ethPersonalSign: () => {
-          ref.current.ethPersonalSign()
-        },
-        navigate: (to: string) => {
-          ref.current.navigate(to)
+        action: (action: ActionRequest) => {
+          return ref.current.action(action)
         },
       },
     })
-    setParent(connection)
+    parentRef.current = parent
     return () => {
-      setParent(null)
-      connection.destroy()
+      parentRef.current = null
+      parent.destroy()
     }
   }, [])
 
   const value = useMemo(() => {
     return {
       onAuthUpdate: async (auth: AuthState|null) => {
-        await (await parent?.promise)?.onAuthUpdate(auth)
-      },
-      close: async () => {
-        await (await parent?.promise)?.close()
+        await (await parentRef.current?.promise)?.onAuthUpdate(auth)
       },
     }
-  }, [parent])
+  }, [])
 
   return (
     <PenpalContext.Provider value={value}>

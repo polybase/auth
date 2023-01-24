@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 import * as Sentry from '@sentry/react'
 import posthog from 'posthog-js'
 import { usePenpal } from 'features/penpal/usePenpal'
-import { AuthState } from 'features/penpal/PenpalProvider'
+import { AuthState } from './types'
 
 export interface AuthContextValue {
   auth: AuthState | null
