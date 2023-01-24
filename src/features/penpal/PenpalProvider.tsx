@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState, useMemo, useRef } from 'react'
+import { createContext, useEffect, useMemo, useRef } from 'react'
 import { connectToParent, Connection } from 'penpal'
 import { AuthState } from 'features/auth/types'
 import { useAction } from 'features/action/useAction'

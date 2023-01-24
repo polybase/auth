@@ -2,10 +2,8 @@ import { createContext, useCallback, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export interface ActionRequest {
-  type: 'sign',
-  data: {
-    msg: string
-  }
+  type: 'sign'|'login'
+  data: any
 }
 
 export interface Action extends ActionRequest {

@@ -13,6 +13,7 @@ import polybase from 'config/polybase'
 import { AuthProvider } from 'features/auth/AuthProvider'
 import { PenpalProvider } from 'features/penpal/PenpalProvider'
 import { ActionProvider } from 'features/action/ActionProvider'
+import { ActionController } from 'features/action/ActionController'
 
 export const App = () => {
   return (
@@ -20,13 +21,15 @@ export const App = () => {
       <ActionProvider>
         <PenpalProvider>
           <AuthProvider>
-            <PolybaseProvider polybase={polybase}>
-              <ChakraProvider theme={theme}>
-                <PostHogPageView />
-                <ScrollToTop />
-                <AppRoutes />
-              </ChakraProvider>
-            </PolybaseProvider>
+            <ActionController>
+              <PolybaseProvider polybase={polybase}>
+                <ChakraProvider theme={theme}>
+                  <PostHogPageView />
+                  <ScrollToTop />
+                  <AppRoutes />
+                </ChakraProvider>
+              </PolybaseProvider>
+            </ActionController>
           </AuthProvider>
         </PenpalProvider>
       </ActionProvider>

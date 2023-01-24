@@ -21,6 +21,8 @@ export function Metamask () {
   }, [account])
 
   const onSubmit = () => {
+    if (!account) return
+
     login({
       type: 'metamask',
       userId: account,

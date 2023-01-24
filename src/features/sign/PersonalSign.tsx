@@ -4,26 +4,34 @@ import {
 } from '@chakra-ui/react'
 import { sign } from '@polybase/eth'
 import { useAuth } from 'features/auth/useAuth'
+import { useAction } from 'features/action/useAction'
 import { Layout } from 'features/Layout'
 import { Loading } from 'modules/loading/Loading'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export function PersonalSign () {
   // const [loading, setLoading] = useState(true)
   const { auth, loading } = useAuth()
-  const location = useLocation()
+  const { action } = useAction()
   const navigate = useNavigate()
 
   useEffect(() => {
     (async () => {
       if (loading) return
-      if (!auth?.userId) {
+
+      // Invalid auth
+      if (!auth) {
         navigate('/')
         return
       }
-      await sign(location.state.msg, auth?.userId)
+
+      // Request sign in
+      if (auth.type === 'metamask') {
+        const resp = await sign(action?.data.msg, auth.userId)
+        action?.resolve(resp)
+      }
     })()
-  }, [auth?.userId, loading, location.state.msg, navigate])
+  }, [action, action?.data.msg, auth, auth?.userId, loading, navigate])
 
   return (
     <Layout title='Personal Sign'>
