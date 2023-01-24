@@ -32,8 +32,8 @@ export const Loading: React.FC<LoadingProps> = ({ loading, center, children, del
           <Spinner
             thickness='5px'
             speed='0.65s'
-            emptyColor='gray.200'
-            color='blue.500'
+            emptyColor='whiteAlpha.300'
+            color='brand.500'
             size='xl'
           />
         </Center>

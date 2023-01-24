@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom'
-import ReactGA from 'react-ga'
 import { Home } from './features/Home'
 import { EmailCodeRequest } from 'features/email/EmailCodeRequest'
 import { EmailCodeVerify } from 'features/email/EmailCodeVerify'
+import { Metamask } from 'features/metamask/Metamask'
 import { Success } from 'features/Success'
 import { useIsLoggedIn } from 'features/auth/useIsLoggedIn'
 import { PersonalSign } from 'features/sign/PersonalSign'
@@ -14,23 +14,19 @@ export default function AppRouter () {
   const location = useLocation()
 
   useEffect(() => {
-    ReactGA.set({ page: location.pathname })
-    ReactGA.pageview(location.pathname)
-  }, [location.pathname])
-
-  useEffect(() => {
     if (isLoggedInLoading) return
 
     // If success, but not logged in, send to start of flow
     if (!isLoggedIn && location.pathname.startsWith('/success')) return navigate('/')
 
     // If sent to root, confirm login
-    if (isLoggedIn && location.pathname === '/') return navigate('/success')
+    // if (isLoggedIn && location.pathname === '/') return navigate('/success')
   }, [location.pathname, location.state, navigate, isLoggedIn, isLoggedInLoading])
 
   return (
     <Routes>
       <Route path='/' element={<Home />} />
+      <Route path='/metamask' element={<Metamask />} />
       <Route path='/email' element={<EmailCodeRequest />} />
       <Route path='/email/verify' element={<EmailCodeVerify />} />
       <Route path='/sign/personal' element={<PersonalSign />} />

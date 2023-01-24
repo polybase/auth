@@ -11,19 +11,22 @@ import PostHogPageView from 'modules/common/PostHogPageView'
 import { PolybaseProvider } from '@polybase/react'
 import polybase from 'config/polybase'
 import { AuthProvider } from 'features/auth/AuthProvider'
+import { PenpalProvider } from 'features/penpal/PenpalProvider'
 
 export const App = () => {
   return (
-    <AuthProvider>
-      <PolybaseProvider polybase={polybase}>
-        <ChakraProvider theme={theme}>
-          <Router>
-            <PostHogPageView />
-            <ScrollToTop />
-            <AppRoutes />
-          </Router>
-        </ChakraProvider>
-      </PolybaseProvider>
-    </AuthProvider>
+    <Router>
+      <PenpalProvider>
+        <AuthProvider>
+          <PolybaseProvider polybase={polybase}>
+            <ChakraProvider theme={theme}>
+              <PostHogPageView />
+              <ScrollToTop />
+              <AppRoutes />
+            </ChakraProvider>
+          </PolybaseProvider>
+        </AuthProvider>
+      </PenpalProvider>
+    </Router>
   )
 }

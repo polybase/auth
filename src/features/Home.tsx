@@ -4,13 +4,17 @@ import {
   ButtonProps,
 } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
+import { requestAccounts } from '@polybase/eth'
 import metamask from 'img/metamask.svg'
 import email from 'img/email.svg'
 import { Layout } from './Layout'
 
 export function Home () {
   const hasMetamask = !!window?.ethereum
-  const installMetamaskProps = hasMetamask ? {} : {
+  const installMetamaskProps = hasMetamask ? {
+    as: Link,
+    to: '/metamask',
+  } : {
     as: 'a',
     target: '_blank',
     href: 'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn',

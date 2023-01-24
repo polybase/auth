@@ -37,7 +37,11 @@ export function EmailCodeVerify () {
       code,
     })
 
-    login(res.data.token, res.data.userId, email)
+    login({
+      type: 'email',
+      userId: res.data.userId,
+      email,
+    }, res.data.token)
 
     navigate('/success')
   })

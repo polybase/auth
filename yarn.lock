@@ -2668,15 +2668,6 @@
     "@polybase/polylang" "0.4.4"
     axios "0.27.2"
 
-"@polybase/eth@^0.3.11":
-  version "0.3.12"
-  resolved "https://registry.yarnpkg.com/@polybase/eth/-/eth-0.3.12.tgz#5f7b0fa04128c209160308ff401ff78d3cd6e860"
-  integrity sha512-9rqO6pQk/SJsovhQIFeBq0q5RNuF70kuZU1nxQ/Q1+qAhJsg7rx+sSBE0JvmXBtLwv9AjYPOLxbSVKQ+EMeI4A==
-  dependencies:
-    "@ethersproject/keccak256" "^5.7.0"
-    "@ethersproject/strings" "^5.7.0"
-    "@polybase/util" "^0.3.12"
-
 "@polybase/eth@^0.3.22":
   version "0.3.22"
   resolved "https://registry.yarnpkg.com/@polybase/eth/-/eth-0.3.22.tgz#54d45ba727990fd39865f329d699a5239dc4cc4d"
@@ -2695,19 +2686,6 @@
   version "0.3.12"
   resolved "https://registry.yarnpkg.com/@polybase/react/-/react-0.3.12.tgz#483a699899e939fb5b0a35c3f3b73c1dc53bc110"
   integrity sha512-4dDW08yk1dxrmFLdvGyy+4+DnH2nT+XEbzz8BCIiwzxStgJNGvfBwoCak8dVdtVl1uQqaV/dDt1gIeLAJW/uPQ==
-
-"@polybase/util@^0.3.12":
-  version "0.3.12"
-  resolved "https://registry.yarnpkg.com/@polybase/util/-/util-0.3.12.tgz#be50b146f1044d7d72d766a70c23690cbe699b15"
-  integrity sha512-m8ICCdJ+GFgQJrYMt4U5PmDrxc7H43UnRRc9QyPVwjQu5yMPqq9MVGQyY5eOhx5HHD2KDyaJjVDutGJ7p+3pYw==
-  dependencies:
-    "@ethersproject/bytes" "^5.7.0"
-    "@ethersproject/signing-key" "^5.7.0"
-    "@peculiar/webcrypto" "^1.4.1"
-    elliptic "^6.5.4"
-    secp256k1 "^4.0.3"
-    tweetnacl "^1.0.3"
-    tweetnacl-util "^0.15.1"
 
 "@polybase/util@^0.3.22":
   version "0.3.22"
@@ -9296,6 +9274,11 @@ pbkdf2@^3.0.3:
     ripemd160 "^2.0.1"
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
+
+penpal@^6.2.2:
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/penpal/-/penpal-6.2.2.tgz#20a0a0592881a959e8c87116d854f9528b1aa601"
+  integrity sha512-RQD7hTx14/LY7QoS3tQYO3/fzVtwvZI+JeS5udgsu7FPaEDjlvfK9HBcme9/ipzSPKnrxSgacI9PI7154W62YQ==
 
 performance-now@^2.1.0:
   version "2.1.0"
