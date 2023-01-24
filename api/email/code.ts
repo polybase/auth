@@ -59,7 +59,7 @@ export default requestHandler('POST', async (request: VercelRequest) => {
     ],
     after: [
       {
-        this: `This code expires in 15 minutes. Code was requested from <b>${agent}</b> at <b>${date}</b>.`,
+        this: `This code expires in 15 minutes. Code was requested from <b>${agent}</b> on <b>${date}</b>.`,
       },
     ],
     before_text: [
@@ -69,10 +69,10 @@ export default requestHandler('POST', async (request: VercelRequest) => {
     ],
     after_text: [
       {
-        this: `This code expires in 15 minutes. Code was requested from ${agent} at ${date}.`,
+        this: `This code expires in 15 minutes. Code was requested from ${agent} on ${date}.`,
       },
     ],
-  })
+  }, { From: 'Login <calum@polybase.xyz>' })
 
   return {
     status: 'OK',
