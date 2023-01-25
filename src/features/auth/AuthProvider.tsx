@@ -43,7 +43,7 @@ export function AuthProvider ({ children, storagePrefix = 'polybase.auth.', doma
   const [loading, setLoading] = useState(true)
   const { onAuthUpdate, origin } = usePenpal()
 
-  const verifiedDomain = origin ? (new URL(origin)).hostname : null
+  const verifiedDomain = origin ? (new URL(origin)).host : null
 
   const addAllowedDomain = useCallback(async (domain: string) => {
     setAllowedDomains((domains) => [...domains, domain])
@@ -71,6 +71,7 @@ export function AuthProvider ({ children, storagePrefix = 'polybase.auth.', doma
   }, [authPath, domain, tokenPath, domainsPath])
 
   useEffect(() => {
+    if (!allowedDomains.length) return
     Cookies.set(domainsPath, allowedDomains.join(','), { domain, sameSite: 'none', secure: true })
   }, [allowedDomains, auth, authPath, domain, domainsPath])
 

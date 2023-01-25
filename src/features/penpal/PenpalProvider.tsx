@@ -30,6 +30,7 @@ export interface Register {
 
 export function PenpalProvider ({ children }: PenpalProviderProps) {
   const parentRef = useRef<Connection<ParentFns>|null>(null)
+  const [parent, setParent] = useState<Connection<ParentFns>|null>(null)
   const { setAction } = useAction()
   const [origin, setOrigin] = useState<null|string>(null)
 
@@ -64,6 +65,7 @@ export function PenpalProvider ({ children }: PenpalProviderProps) {
       },
       parentOrigin: origin ?? undefined,
     })
+    setParent(parent)
     parentRef.current = parent
     return () => {
       parentRef.current = null
@@ -75,10 +77,11 @@ export function PenpalProvider ({ children }: PenpalProviderProps) {
     return {
       origin,
       onAuthUpdate: async (auth: AuthState|null) => {
-        await (await parentRef.current?.promise)?.onAuthUpdate(auth)
+        if (!parentRef.current) return
+        await (await parent?.promise)?.onAuthUpdate(auth)
       },
     }
-  }, [origin])
+  }, [origin, parent])
 
   return (
     <PenpalContext.Provider value={value}>
