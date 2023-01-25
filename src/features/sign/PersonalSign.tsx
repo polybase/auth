@@ -91,7 +91,7 @@ export function PersonalSign () {
           </Box>
         )}
         <Spacer dir='' />
-        {<Button size='lg' onClick={polybaseSign.execute} isLoading={polybaseSign.loading}>Sign</Button>}
+        {authType !== 'metamask' && <Button size='lg' onClick={polybaseSign.execute} isLoading={polybaseSign.loading}>Sign</Button>}
       </Stack>
     </Layout>
   )
