@@ -29,14 +29,22 @@ export function requestHandler (method: 'GET'|'POST', fn: (request: VercelReques
         })
       }
 
-      if ((error.error?.statusCode && error.error?.statusCode >= 500) || error.error?.log) {
-        Sentry.captureException(error)
-        console.log(originalError)
-      }
-
       const {
         code, message, data, reason, statusCode,
       } = error?.toJSON() ?? {}
+
+      if ((error.error?.statusCode && error.error?.statusCode >= 500) || error.error?.log) {
+        Sentry.captureException(error.error.originalError ?? error, {
+          tags: {
+            code,
+            reason,
+          },
+          extra: {
+            data,
+          },
+        })
+        console.log(originalError)
+      }
 
       // TODO: Notify Sentry
       const out = {
