@@ -76,7 +76,7 @@ export default requestHandler('POST', async (request: VercelRequest) => {
     // Encrypt email
     const encryptedEmail = await aescbc.symmetricEncryptToEncoding(
       decodeFromString(ENCRYPTION_KEY, 'hex'),
-      encodeToString(email, 'hex'),
+      email,
       'hex',
     )
 
