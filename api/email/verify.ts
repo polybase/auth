@@ -8,6 +8,7 @@ import { polybase } from '../_config/polybase'
 import { REDIS_EMAIL_CODE_PREFIX, EMAIL_CODE_VERIFY_THROTTLE, EMAIL_CODE_VERIFY_MAX } from './_constants'
 import { createError } from '../_errors'
 import { PolybaseError } from '@polybase/client'
+import { getPublicCompressed } from '@polybase/util/dist/algorithems/secp256k1'
 
 const {
   ENCRYPTION_KEY = '',
@@ -58,9 +59,12 @@ export default requestHandler('POST', async (request: VercelRequest) => {
     }
     throw e
   })
+
+  let privateKey
+
   if (!user) {
     // Generate public/private key pair
-    const { publicKey, privateKey } = await secp256k1.generateKeyPair()
+    privateKey = await secp256k1.generatePrivateKey()
 
     // Encrypt private key
     const encryptedPvKey = await aescbc.symmetricEncryptToEncoding(
@@ -78,16 +82,29 @@ export default requestHandler('POST', async (request: VercelRequest) => {
 
     // Create the user
     await polybase.collection('email').create([userId, encryptedEmail, encryptedPvKey])
+  } else {
+    // Decode existing user private key
+    const privateKeyStr = await aescbc.symmetricDecryptFromEncoding(
+      decodeFromString(ENCRYPTION_KEY, 'hex'),
+      user.data.pvkey,
+      'hex',
+    )
+    privateKey = decodeFromString(privateKeyStr, 'hex')
   }
+
+  // Set public key
+  const publicKey = encodeToString(getPublicCompressed(privateKey), 'hex')
 
   // Create the token for user
   const token = await jwt.sign({
     type: 'email',
     userId,
+    publicKey,
   })
 
   return {
     userId,
+    publicKey,
     token,
   }
 })
