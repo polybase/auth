@@ -34,13 +34,14 @@ export function requestHandler (method: 'GET'|'POST', fn: (request: VercelReques
       } = error?.toJSON() ?? {}
 
       if ((error.error?.statusCode && error.error?.statusCode >= 500) || error.error?.log) {
-        Sentry.captureException(error.error.originalError ?? error, {
+        Sentry.captureException(originalError instanceof Error ? originalError : error, {
           tags: {
             code,
             reason,
           },
           extra: {
             data,
+            originalError: originalError?.stack,
           },
         })
         console.log('Error: ', error)
