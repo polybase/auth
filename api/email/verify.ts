@@ -9,6 +9,7 @@ import { REDIS_EMAIL_CODE_PREFIX, EMAIL_CODE_VERIFY_THROTTLE, EMAIL_CODE_VERIFY_
 import { createError } from '../_errors'
 import { PolybaseError } from '@polybase/client'
 import { getPublicCompressed } from '@polybase/util/dist/algorithems/secp256k1'
+import { EmailUser } from '../_types'
 
 const {
   ENCRYPTION_KEY = '',
@@ -53,7 +54,7 @@ export default requestHandler('POST', async (request: VercelRequest) => {
   const userId = `0x${crypto.createHash('sha256').update(email).digest('hex')}`
 
   // Does user already exist?
-  const user = await polybase.collection('email').record(userId).get().catch((e) => {
+  const user = await polybase.collection<EmailUser>('email').record(userId).get().catch((e) => {
     if (e instanceof PolybaseError && e.reason === 'record/not-found') {
       return null
     }

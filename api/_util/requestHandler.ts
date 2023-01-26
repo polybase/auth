@@ -43,7 +43,8 @@ export function requestHandler (method: 'GET'|'POST', fn: (request: VercelReques
             data,
           },
         })
-        console.log(originalError)
+        console.log('Error: ', error)
+        console.log('Original Error: ', originalError)
       }
 
       // TODO: Notify Sentry
