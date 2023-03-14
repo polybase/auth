@@ -5,19 +5,19 @@ import { useAction } from 'features/action/useAction'
 import { ActionRequest } from 'features/action/ActionProvider'
 
 export interface ParentFns {
-  onAuthUpdate: (auth: AuthState|null) => Promise<void>
+  onAuthUpdate: (auth: AuthState | null) => Promise<void>
   show: () => void
   hide: () => void
 }
 
 export interface PenpalContextValue {
-  origin: string|null
-  onAuthUpdate: (auth: AuthState|null) => Promise<void>
+  origin: string | null
+  onAuthUpdate: (auth: AuthState | null) => Promise<void>
 }
 
 export const PenpalContext = createContext<PenpalContextValue>({
   origin: null,
-  onAuthUpdate: async () => {},
+  onAuthUpdate: async () => { },
 })
 
 export interface PenpalProviderProps {
@@ -28,16 +28,18 @@ export interface Register {
   domain: string
 }
 
-export function PenpalProvider ({ children }: PenpalProviderProps) {
-  const parentRef = useRef<Connection<ParentFns>|null>(null)
-  const [parent, setParent] = useState<Connection<ParentFns>|null>(null)
+export function PenpalProvider({ children }: PenpalProviderProps) {
+  const parentRef = useRef<Connection<ParentFns> | null>(null)
+  const [parent, setParent] = useState<Connection<ParentFns> | null>(null)
   const { setAction } = useAction()
-  const [origin, setOrigin] = useState<null|string>(null)
+  const [origin, setOrigin] = useState<null | string>(null)
 
   const ref = useRef({
     action: async (action: ActionRequest) => {
       const parent = await parentRef.current?.promise
-      await parent?.show()
+      if (action.type !== 'signOut') {
+        await parent?.show()
+      }
       try {
         const res = await setAction(action)
         await parent?.hide()
@@ -76,7 +78,7 @@ export function PenpalProvider ({ children }: PenpalProviderProps) {
   const value = useMemo(() => {
     return {
       origin,
-      onAuthUpdate: async (auth: AuthState|null) => {
+      onAuthUpdate: async (auth: AuthState | null) => {
         if (!parentRef.current) return
         await (await parent?.promise)?.onAuthUpdate(auth)
       },

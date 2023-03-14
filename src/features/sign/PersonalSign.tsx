@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useAsyncCallback } from 'modules/common/useAsyncCallback'
 
-export function PersonalSign () {
+export function PersonalSign() {
   const signRefLoading = useRef(false)
   const [error, setError] = useState<boolean>(false)
   const { auth, token, loading } = useAuth()

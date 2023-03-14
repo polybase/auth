@@ -7,9 +7,9 @@ import { useAsyncCallback } from 'modules/common/useAsyncCallback'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from 'features/auth/useAuth'
 
-export function Metamask () {
+export function Metamask() {
   const { login } = useAuth()
-  const [account, setAccount] = useState<string|null>(null)
+  const [account, setAccount] = useState<string | null>(null)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export function Metamask () {
       <Stack spacing={6}>
         <Stack>
           <Heading fontSize='md' lineHeight={1.7} color='bw.600'>
-          You are connected to:
+            You are connected to:
           </Heading>
           <Heading fontSize='lg' color='bw.800'>
             {account}
@@ -61,7 +61,7 @@ export function Metamask () {
             variant='outline'
             isLoading={changeAccount.loading}
             onClick={changeAccount.execute}>
-              Swap Account
+            Swap Account
           </Button>
         </Stack>
       </Stack>

@@ -8,10 +8,10 @@ export interface ActionControllerProps {
   children: React.ReactNode
 }
 
-export function ActionController ({ children }: ActionControllerProps) {
-  const runOnceRef = useRef<Action|null>(null)
+export function ActionController({ children }: ActionControllerProps) {
+  const runOnceRef = useRef<Action | null>(null)
   const { action } = useAction()
-  const { auth, loading } = useAuth()
+  const { auth, removeAllowedDomain, loading } = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -26,10 +26,15 @@ export function ActionController ({ children }: ActionControllerProps) {
 
     // Authenticated, move to next step
     switch (action.type) {
-      case 'signIn': return  navigate('/connected')
+      case 'signIn':
+        return navigate('/connected')
+      case 'signOut':
+        removeAllowedDomain(action.data?.domain)
+        action.resolve()
+        return
       case 'ethPersonalSign': return navigate('/sign/personal')
     }
-  }, [action, auth, loading, navigate])
+  }, [action, auth, loading, navigate, removeAllowedDomain])
 
   return (
     <>{children}</>

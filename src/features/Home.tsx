@@ -8,7 +8,7 @@ import metamask from 'img/metamask.svg'
 import email from 'img/email.svg'
 import { Layout } from './Layout'
 
-export function Home () {
+export function Home() {
   const hasMetamask = !!window?.ethereum
   const installMetamaskProps = hasMetamask ? {
     as: Link,
