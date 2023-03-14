@@ -10,14 +10,19 @@ import { useAction } from './action/useAction'
 import { useAuth } from './auth/useAuth'
 import { Layout } from './Layout'
 
-export function Connected () {
+export function Connected() {
   const { auth, loading, logout, isAllowedDomain, verifiedDomain, addAllowedDomain } = useAuth()
   const { action } = useAction()
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!auth && !loading) {
+    if (loading) return
+    if (!auth) {
       navigate('/')
+    } else {
+      if (isAllowedDomain && !action?.data?.force) {
+        action?.resolve(auth)
+      }
     }
   })
 

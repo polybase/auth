@@ -1,8 +1,9 @@
+import { usePenpal } from 'features/penpal/usePenpal'
 import { createContext, useCallback, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export interface ActionRequest {
-  type: 'ethPersonalSign'|'signIn'
+  type: 'ethPersonalSign' | 'signIn' | 'signOut'
   data: any
 }
 
@@ -15,11 +16,11 @@ export interface Action extends ActionRequest {
 
 export interface ActionContextValue {
   setAction: (action: ActionRequest) => Promise<any>
-  action: Action|null
+  action: Action | null
 }
 
 export const ActionContext = createContext<ActionContextValue>({
-  setAction: async (action: ActionRequest) => {},
+  setAction: async (action: ActionRequest) => { },
   action: null,
 })
 
@@ -27,8 +28,8 @@ export interface ActionProviderProps {
   children: React.ReactNode
 }
 
-export function ActionProvider ({ children }: ActionProviderProps) {
-  const [action, setAction] = useState<Action|null>(null)
+export function ActionProvider({ children }: ActionProviderProps) {
+  const [action, setAction] = useState<Action | null>(null)
   const navigate = useNavigate()
 
   const setActionFn = useCallback((newAction: ActionRequest) => {
@@ -36,8 +37,6 @@ export function ActionProvider ({ children }: ActionProviderProps) {
     if (action) {
       action.reject(new Error('Action cancelled by user'))
     }
-
-    navigate('/')
 
     // Return promise of new action
     return new Promise((resolve, reject) => {

@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { ActionContext } from './ActionProvider'
 
-export function useAction () {
+export function useAction() {
   return useContext(ActionContext)
 }

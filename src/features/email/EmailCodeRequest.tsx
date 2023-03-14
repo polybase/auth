@@ -9,7 +9,7 @@ import { Layout } from '../Layout'
 import { useNavigate } from 'react-router-dom'
 import { useAsyncCallback } from 'modules/common/useAsyncCallback'
 
-export function EmailCodeRequest () {
+export function EmailCodeRequest() {
   const [email, setEmail] = useState('')
   const navigate = useNavigate()
   const sendEmail = useAsyncCallback(async (e) => {

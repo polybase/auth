@@ -9,7 +9,7 @@ export interface LayoutProps {
   children: React.ReactNode
 }
 
-export function Layout ({ title, children }: LayoutProps) {
+export function Layout({ title, children }: LayoutProps) {
   return (
     <Box width='100%' height='100%' p={8}>
       <Stack spacing={6}>

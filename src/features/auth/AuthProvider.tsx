@@ -7,22 +7,24 @@ import { AuthState } from './types'
 
 export interface AuthContextValue {
   auth: AuthState | null
-  token: string|null
+  token: string | null
   loading: boolean
-  login: (auth: AuthState, token?: string|null) => Promise<void>
+  login: (auth: AuthState, token?: string | null) => Promise<void>
   logout: () => Promise<void>
   addAllowedDomain: (domain: string) => void
+  removeAllowedDomain: (domain: string) => void
   isAllowedDomain: boolean
-  verifiedDomain: string|null
+  verifiedDomain: string | null
 }
 
 export const AuthContext = createContext<AuthContextValue>({
   loading: true,
   auth: null,
   token: null,
-  login: async (auth: AuthState, token?: string|null) => {},
+  login: async (auth: AuthState, token?: string | null) => { },
   logout: async () => { },
-  addAllowedDomain: () => {},
+  addAllowedDomain: () => { },
+  removeAllowedDomain: () => { },
   isAllowedDomain: false,
   verifiedDomain: null,
 })
@@ -33,13 +35,16 @@ export interface AuthProviderProps {
   domain?: string
 }
 
-export function AuthProvider ({ children, storagePrefix = 'polybase.auth.', domain }: AuthProviderProps) {
+export function AuthProvider({ children, storagePrefix = 'polybase.auth.', domain }: AuthProviderProps) {
   const authPath = `${storagePrefix}auth`
   const tokenPath = `${storagePrefix}token`
   const domainsPath = `${storagePrefix}domains`
-  const [auth, setAuth] = useState<AuthState|null>(null)
-  const [token, setToken] = useState<string|null>(null)
-  const [allowedDomains, setAllowedDomains] = useState<string[]>([])
+  const [auth, setAuth] = useState<AuthState | null>(null)
+  const [token, setToken] = useState<string | null>(null)
+  const [allowedDomains, setAllowedDomains] = useState<string[]>(() => {
+    const domains = Cookies.get(domainsPath)
+    return domains?.split(',') ?? []
+  })
   const [loading, setLoading] = useState(true)
   const { onAuthUpdate, origin } = usePenpal()
 
@@ -49,9 +54,13 @@ export function AuthProvider ({ children, storagePrefix = 'polybase.auth.', doma
     setAllowedDomains((domains) => [...domains, domain])
   }, [])
 
+  const removeAllowedDomain = useCallback(async (domain: string) => {
+    setAllowedDomains((domains) => domains.filter((d) => d === domain))
+  }, [])
+
   const isAllowedDomain = !!(verifiedDomain && allowedDomains?.indexOf(verifiedDomain) > -1)
 
-  const login = useCallback(async (auth: AuthState, token?: string|null) => {
+  const login = useCallback(async (auth: AuthState, token?: string | null) => {
     Cookies.set(authPath, JSON.stringify(auth), { domain, sameSite: 'none', secure: true })
     setAuth(auth)
     if (verifiedDomain) addAllowedDomain(verifiedDomain)
@@ -71,18 +80,14 @@ export function AuthProvider ({ children, storagePrefix = 'polybase.auth.', doma
   }, [authPath, domain, tokenPath, domainsPath])
 
   useEffect(() => {
-    if (!allowedDomains.length) return
+    if (loading) return
     Cookies.set(domainsPath, allowedDomains.join(','), { domain, sameSite: 'none', secure: true })
-  }, [allowedDomains, auth, authPath, domain, domainsPath])
+  }, [allowedDomains, auth, authPath, domain, domainsPath, loading])
 
   useEffect(() => {
     if (auth) return
     const authStr = Cookies.get(authPath)
     const token = Cookies.get(tokenPath)
-    const domains = Cookies.get(domainsPath)
-    if (domains) {
-      setAllowedDomains(domains.split(','))
-    }
     if (authStr) {
       const auth = JSON.parse(authStr)
       setAuth(auth)
@@ -93,8 +98,8 @@ export function AuthProvider ({ children, storagePrefix = 'polybase.auth.', doma
 
   // Notify parent of login if in allowed domains
   useEffect(() => {
-    if (verifiedDomain && allowedDomains?.indexOf(verifiedDomain) > -1) {
-      onAuthUpdate(auth)
+    if (verifiedDomain) {
+      onAuthUpdate(auth && allowedDomains?.indexOf(verifiedDomain) > -1 ? auth : null)
     }
   }, [allowedDomains, auth, onAuthUpdate, verifiedDomain])
 
@@ -106,8 +111,9 @@ export function AuthProvider ({ children, storagePrefix = 'polybase.auth.', doma
     logout,
     verifiedDomain,
     addAllowedDomain,
+    removeAllowedDomain,
     isAllowedDomain,
-  }), [auth, token, loading, login, logout, verifiedDomain, addAllowedDomain, isAllowedDomain])
+  }), [auth, token, loading, login, logout, verifiedDomain, addAllowedDomain, removeAllowedDomain, isAllowedDomain])
 
   return (
     <AuthContext.Provider value={value}

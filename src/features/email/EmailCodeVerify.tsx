@@ -11,10 +11,10 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useAsyncCallback } from 'modules/common/useAsyncCallback'
 import { useAuth } from 'features/auth/useAuth'
 import { Layout } from '../Layout'
-import { useAction } from 'features/action/useAction'
+// import { useAction } from 'features/action/useAction'
 // import { useAction } from 'features/action/useAction'
 
-export function EmailCodeVerify () {
+export function EmailCodeVerify() {
   const [codeRaw, setCode] = useState('')
   const { login } = useAuth()
   const location = useLocation()
@@ -59,7 +59,7 @@ export function EmailCodeVerify () {
         <Stack spacing={6}>
           <Stack fontSize='lg'>
             <Text>
-            Enter the code sent to <Text as='b' fontSize='xl'>{email}</Text>
+              Enter the code sent to <Text as='b' fontSize='xl'>{email}</Text>
             </Text>
             <Text fontWeight='bold' fontSize='xl'>
 

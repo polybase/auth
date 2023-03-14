@@ -1,6 +1,6 @@
 export interface AuthState {
-  type: 'metamask'|'email'
+  type: 'metamask' | 'email'
   userId: string
-  email?: string|null
-  publicKey?: string|null
+  email?: string | null
+  publicKey?: string | null
 }
