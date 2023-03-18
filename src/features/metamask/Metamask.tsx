@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Box, Heading, Stack, Button } from '@chakra-ui/react'
-import { requestAccounts } from '@polybase/eth'
+import { requestAccounts, sign, ethPersonalSignRecoverPublicKey } from '@polybase/eth'
 import { Loading } from 'modules/loading/Loading'
 import { Layout } from 'features/Layout'
 import { useAsyncCallback } from 'modules/common/useAsyncCallback'
@@ -20,16 +20,23 @@ export function Metamask() {
     })()
   }, [account])
 
-  const onSubmit = () => {
+  const onSubmit = useAsyncCallback(async () => {
     if (!account) return
+
+    // Get 64 byte public key
+    const msg = 'Sign in'
+    const sig = await sign(msg, account)
+    const pkWithPrefix = await ethPersonalSignRecoverPublicKey(sig, msg)
+    const publicKey = '0x' + pkWithPrefix.slice(4)
 
     login({
       type: 'metamask',
       userId: account,
+      publicKey,
     })
 
     navigate('/success')
-  }
+  })
 
   const changeAccount = useAsyncCallback(async () => {
     await window.ethereum.request({
@@ -55,7 +62,7 @@ export function Metamask() {
           </Heading>
         </Stack>
         <Stack spacing={3}>
-          <Button size='lg' onClick={onSubmit}>Continue</Button>
+          <Button size='lg' onClick={onSubmit.execute}>Continue</Button>
           <Button
             size='lg'
             variant='outline'

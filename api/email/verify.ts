@@ -8,7 +8,7 @@ import { polybase } from '../_config/polybase'
 import { REDIS_EMAIL_CODE_PREFIX, EMAIL_CODE_VERIFY_THROTTLE, EMAIL_CODE_VERIFY_MAX } from './_constants'
 import { createError } from '../_errors'
 import { PolybaseError } from '@polybase/client'
-import { getPublicCompressed } from '@polybase/util/dist/algorithems/secp256k1'
+import { getPublicKey } from '@polybase/util/dist/algorithems/secp256k1'
 import { EmailUser } from '../_types'
 
 const {
@@ -93,8 +93,8 @@ export default requestHandler('POST', async (request: VercelRequest) => {
     privateKey = decodeFromString(privateKeyStr, 'hex')
   }
 
-  // Set public key
-  const publicKey = encodeToString(getPublicCompressed(privateKey), 'hex')
+  // Get 64 byte public key
+  const publicKey = encodeToString(getPublicKey(privateKey).slice(1), 'hex')
 
   // Create the token for user
   const token = await jwt.sign({
