@@ -4,7 +4,6 @@ import {
   Input,
   Text,
   Button,
-  Code,
 } from '@chakra-ui/react'
 import axios from 'axios'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -46,6 +45,7 @@ export function EmailCodeVerify() {
       type: 'email',
       userId: res.data.userId,
       email,
+      publicKey: res.data.publicKey,
     }, res.data.token)
 
     navigate('/success')
