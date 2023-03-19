@@ -94,14 +94,14 @@ export function AuthProvider({ children, storagePrefix = 'polybase.auth.', domai
     }
     if (token) setToken(token)
     setLoading(false)
-  }, [auth, authPath, domainsPath, onAuthUpdate, tokenPath])
+  }, [auth, authPath, domainsPath, tokenPath])
 
   // Notify parent of login if in allowed domains
   useEffect(() => {
-    if (verifiedDomain) {
+    if (verifiedDomain && !loading) {
       onAuthUpdate(auth && allowedDomains?.indexOf(verifiedDomain) > -1 ? auth : null)
     }
-  }, [allowedDomains, auth, onAuthUpdate, verifiedDomain])
+  }, [allowedDomains, auth, loading, onAuthUpdate, verifiedDomain])
 
   const value: AuthContextValue = useMemo(() => ({
     auth,
