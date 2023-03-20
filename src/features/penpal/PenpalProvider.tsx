@@ -31,7 +31,7 @@ export interface Register {
 export function PenpalProvider({ children }: PenpalProviderProps) {
   const parentRef = useRef<Connection<ParentFns> | null>(null)
   const [parent, setParent] = useState<Connection<ParentFns> | null>(null)
-  const { setAction } = useAction()
+  const { action, addAction } = useAction()
   const [origin, setOrigin] = useState<null | string>(null)
 
   const ref = useRef({
@@ -41,7 +41,7 @@ export function PenpalProvider({ children }: PenpalProviderProps) {
         await parent?.show()
       }
       try {
-        const res = await setAction(action)
+        const res = await addAction(action)
         await parent?.hide()
         return res
       } catch (e) {
@@ -50,6 +50,17 @@ export function PenpalProvider({ children }: PenpalProviderProps) {
       }
     },
   })
+
+  useEffect(() => {
+    (async function () {
+      const parent = await parentRef.current?.promise
+      if (action) {
+        parent?.show()
+      } else {
+        parent?.hide()
+      }
+    })()
+  }, [action])
 
   useEffect(() => {
     const parent = connectToParent<ParentFns>({
