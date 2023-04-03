@@ -31,7 +31,9 @@ if (NODE_ENV === 'production') {
 
 // Analytics
 posthog.init('phc_DBZY8MbRdRIIwSwX4ZSwTAjy5ogdQPDMVdPObOuQQf', { api_host: 'https://a.polybase.xyz' })
-if (process.env.REACT_APP_ENV_NAME !== 'production') {
+if (process.env.REACT_APP_ENV_NAME === 'testnet') {
+  posthog.opt_in_capturing()
+} else {
   posthog.opt_out_capturing()
 }
 
