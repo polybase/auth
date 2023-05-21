@@ -1,6 +1,9 @@
 name: Update npm Packages
 
 on:
+  push:
+    branches:
+      - main
   repository_dispatch:
     types: [update-packages-beta]
 
@@ -19,17 +22,9 @@ jobs:
 
       - name: Install yarn
         run: sudo npm install -g yarn
-      
-      - name: Install cargo
-        uses: baptiste0928/cargo-install@v2
-        with:
-          crate: cargo
 
       - name: Add npm package
-        run: yarn add @polybase/polylang@beta
-     
-      - name: Cargo updage
-        run: cargo update
+        run: yarn add @polybase/client@beta && yarn add @polybase/eth@beta && yarn add @polybase/react@beta && yarn add @polybase/util@beta
 
       - name: Create a PR  # Action will update PR automatically if it already exists
         uses: peter-evans/create-pull-request@v3
