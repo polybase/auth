@@ -1,0 +1,42 @@
+name: Update npm Packages
+
+on:
+  repository_dispatch:
+    types: [update-packages-beta]
+
+jobs:
+  update-packages:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install yarn
+        run: sudo npm install -g yarn
+      
+      - name: Install cargo
+        uses: baptiste0928/cargo-install@v2
+        with:
+          crate: cargo
+
+      - name: Add npm package
+        run: yarn add @polybase/polylang@beta
+     
+      - name: Cargo updage
+        run: cargo update
+
+      - name: Create a PR  # Action will update PR automatically if it already exists
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: Update [beta] packages 
+          branch: update-beta-packages
+          delete-branch: true
+          base: main
+          reviewers: calummoore, mateuszmlc
