@@ -37,4 +37,6 @@ jobs:
           branch: update-beta-packages
           delete-branch: true
           base: main
-          reviewers: calummoore, mateuszmlc
+          reviewers: |
+            calummoore
+            mateuszmlc
