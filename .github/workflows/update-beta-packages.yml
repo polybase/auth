@@ -1,9 +1,6 @@
 name: Update Packages
 
 on:
-  push:
-    branches:
-      - eng-601-update-dependent-repos-on-push
   repository_dispatch:
     types: [update-packages-beta]
 
