@@ -26,8 +26,8 @@ jobs:
           node-version: 18.x
           cache: 'yarn'
 
-      - name: Run Lerna version
-        run: npx lerna version v$VERSION --no-git-tag-version --force-publish --yes
+      - name: Run version
+        run: yarn version --new-version $VERSION --no-git-tag-version
 
       - name: Commit changes
         run: |
