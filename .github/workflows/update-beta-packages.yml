@@ -1,9 +1,9 @@
-name: Update npm Packages
+name: Update Packages
 
 on:
   push:
     branches:
-      - main
+      - eng-601-update-dependent-repos-on-push
   repository_dispatch:
     types: [update-packages-beta]
 
@@ -15,21 +15,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 18
-
-      - name: Install yarn
-        run: sudo npm install -g yarn
+          node-version: 18.x
+          cache: 'yarn'
 
       - name: Add npm package
-        run: yarn add @polybase/client@beta && yarn add @polybase/eth@beta && yarn add @polybase/react@beta && yarn add @polybase/util@beta
+        run: yarn add @polybase/client@beta @polybase/eth@beta @polybase/react@beta @polybase/util@beta
 
       - name: Create a PR  # Action will update PR automatically if it already exists
         uses: peter-evans/create-pull-request@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.ADMIN_TOKEN }}
           title: Update [beta] packages 
           branch: update-beta-packages
           delete-branch: true
