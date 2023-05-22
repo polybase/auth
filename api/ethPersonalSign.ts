@@ -22,6 +22,10 @@ export default requestHandler('POST', async (request: VercelRequest) => {
   // Lookup user
   const user = await polybase.collection<EmailUser>('email').record(userId).get()
 
+  if (!user?.data) {
+    throw createError('auth/user-id-not-found')
+  }
+
   const privateKeyStr = await aescbc.symmetricDecryptFromEncoding(
     decodeFromString(ENCRYPTION_KEY, 'hex'),
     user.data.pvkey,

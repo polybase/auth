@@ -63,7 +63,7 @@ export default requestHandler('POST', async (request: VercelRequest) => {
 
   let privateKey
 
-  if (!user) {
+  if (!user?.exists()) {
     // Generate public/private key pair
     privateKey = await secp256k1.generatePrivateKey()
 
