@@ -1,8 +1,8 @@
-name: Update Beta Packages
+name: Update Packages
 
 on:
   repository_dispatch:
-    types: [update-packages-beta]
+    types: [update-packages]
 
 jobs:
   update-packages:
@@ -18,20 +18,20 @@ jobs:
           cache: 'yarn'
 
       - name: Add npm package
-        run: yarn add @polybase/client@beta @polybase/eth@beta @polybase/react@beta @polybase/util@beta
+        run: yarn add @polybase/client @polybase/eth @polybase/react @polybase/util
 
-      - name: Get latest beta version
+      - name: Get latest version
         id: version
         run: |
-          latest_beta_version=$(npm show @polybase/client@beta version)
-          echo "::set-output name=latest_beta_version::$latest_beta_version"
+          latest_version=$(npm show @polybase/client version)
+          echo "::set-output name=latest__version::$latest__version"
 
       - name: Create a PR  # Action will update PR automatically if it already exists
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.ADMIN_TOKEN }}
-          title: Update packages to version ${{ steps.version.outputs.latest_beta_version }}
-          branch: update-beta-packages
+          title: Update packages to version ${{ steps.version.outputs.latest__version }}
+          branch: update-packages
           delete-branch: true
           base: main
           team-reviewers: engineering
