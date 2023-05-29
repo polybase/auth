@@ -28,6 +28,10 @@ export function EmailCodeRequest() {
     })
   })
 
+  const goBack = () => {
+    navigate(-1)
+  }
+
   return (
     <Layout title='Enter email'>
       <form onSubmit={sendEmail.execute}>
@@ -44,6 +48,12 @@ export function EmailCodeRequest() {
             isLoading={sendEmail.loading}
           >
             Continue
+          </Button>
+          <Button
+            size='lg'
+            onClick={goBack}
+          >
+            Back
           </Button>
         </Stack>
       </form>
