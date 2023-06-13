@@ -8,8 +8,9 @@ import { Connected } from 'features/Connected'
 import { Success } from 'features/Success'
 import { useIsLoggedIn } from 'features/auth/useIsLoggedIn'
 import { PersonalSign } from 'features/sign/PersonalSign'
+import { Layout } from 'Layout'
 
-export default function AppRouter () {
+export default function AppRouter() {
   const [isLoggedIn, isLoggedInLoading] = useIsLoggedIn()
   const navigate = useNavigate()
   const location = useLocation()
@@ -25,15 +26,17 @@ export default function AppRouter () {
   }, [location.pathname, location.state, navigate, isLoggedIn, isLoggedInLoading])
 
   return (
-    <Routes>
-      <Route path='/' element={<Home />} />
-      <Route path='/metamask' element={<Metamask />} />
-      <Route path='/email' element={<EmailCodeRequest />} />
-      <Route path='/email/verify' element={<EmailCodeVerify />} />
-      <Route path='/sign/personal' element={<PersonalSign />} />
-      <Route path='/success' element={<Success />} />
-      <Route path='/connected' element={<Connected />} />
-      <Route path='/*' element={<Navigate to='/' />} />
-    </Routes>
+    <Layout>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/metamask' element={<Metamask />} />
+        <Route path='/email' element={<EmailCodeRequest />} />
+        <Route path='/email/verify' element={<EmailCodeVerify />} />
+        <Route path='/sign/personal' element={<PersonalSign />} />
+        <Route path='/success' element={<Success />} />
+        <Route path='/connected' element={<Connected />} />
+        <Route path='/*' element={<Navigate to='/' />} />
+      </Routes>
+    </Layout>
   )
 }

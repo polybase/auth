@@ -6,7 +6,8 @@ import { Tabs } from './tabs'
 const mode = (light: any, _dark: any) => ({ default: light, _dark })
 
 const theme = extendTheme({
-  useSystemColorMode: true,
+  initialColorMode: 'light',
+  useSystemColorMode: false,
   fonts: {
     heading: 'Inter, "Open Sans", "Source Sans Pro", Arial, Helvetica, sans-serif',
     body: 'Inter, "Open Sans", "Source Sans Pro", Arial, Helvetica, sans-serif',
@@ -18,18 +19,20 @@ const theme = extendTheme({
         padding: 0,
         boxSizing: 'border-box',
       },
+      ':root': {
+        colorScheme: 'normal !important',
+      },
       'html, body, #root': {
         height: '100%',
         fontSize: '14px',
         color: 'bw.800',
+        background: 'transparent',
+        colorScheme: 'normal',
       },
       body: {
         fontFamily: 'Inter, "Open Sans", "Source Sans Pro", Arial, Helvetica, sans-serif',
-        backgroundColor: props.colorMode === 'dark' ? '#0F1117' : '#fff',
-        backgroundPosition: 'top right',
-        backgroundAttachment: 'fixed',
-        backgroundImage: 'url(background.png)',
-        backgroundRepeat: 'no-repeat',
+        background: 'transparent',
+        backgroundColor: 'transparent',
       },
     }),
   },
@@ -39,7 +42,7 @@ const theme = extendTheme({
       warning: mode('#ca4b03c7', '#cc630887'),
       'bw.10': mode('rgba(0, 0, 0, 0.01)', 'rgba(255, 255, 255, 0.01)'),
       'bw.50': mode('rgba(0, 0, 0, 0.04)', 'rgba(255, 255, 255, 0.04)'),
-      'bw.100': mode('rgba(0, 0, 0, 0.06)','rgba(255, 255, 255, 0.06)'),
+      'bw.100': mode('rgba(0, 0, 0, 0.06)', 'rgba(255, 255, 255, 0.06)'),
       'bw.200': mode('rgba(0, 0, 0, 0.08)', 'rgba(255, 255, 255, 0.08)'),
       'bw.300': mode('rgba(0, 0, 0, 0.16)', 'rgba(255, 255, 255, 0.16)'),
       'bw.400': mode('rgba(0, 0, 0, 0.24)', 'rgba(255, 255, 255, 0.24)'),
@@ -95,7 +98,9 @@ const theme = extendTheme({
     Button,
     Tabs,
   },
-}, withDefaultColorScheme({ colorScheme: 'gray' }))
+}, withDefaultColorScheme({
+  colorScheme: 'gray',
+}))
 
 export default theme
 
