@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom'
-import { Home } from './features/Home'
+import { Home } from './features/Home/Home'
 import { EmailCodeRequest } from 'features/email/EmailCodeRequest'
 import { EmailCodeVerify } from 'features/email/EmailCodeVerify'
 import { Metamask } from 'features/metamask/Metamask'

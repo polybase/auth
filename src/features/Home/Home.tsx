@@ -6,7 +6,7 @@ import {
 import { Link } from 'react-router-dom'
 import metamask from 'img/metamask.svg'
 import email from 'img/email.svg'
-import { Layout } from './Layout'
+import { Layout } from '../Layout'
 import { useHasEthereum } from 'modules/web3/useHasEthereum'
 
 export function Home() {
