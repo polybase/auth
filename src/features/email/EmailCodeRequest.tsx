@@ -15,6 +15,10 @@ export function EmailCodeRequest() {
   const sendEmail = useAsyncCallback(async (e) => {
     e.preventDefault()
 
+    if (!email.includes('@')) {
+      throw new Error('Invalid email address')
+    }
+
     // Send email code request
     await axios.post('/api/email/code', {
       email,
@@ -35,6 +39,7 @@ export function EmailCodeRequest() {
           <Input
             size='lg'
             autoFocus
+            type='email'
             value={email}
             onChange={(e) => { setEmail(e.target.value) }}
           />
