@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { Routes, Route, useNavigate, useLocation, Navigate } from 'react-router-dom'
-import { Home } from './features/Home/Home'
 import { EmailCodeRequest } from 'features/email/EmailCodeRequest'
 import { EmailCodeVerify } from 'features/email/EmailCodeVerify'
 import { Metamask } from 'features/metamask/Metamask'
@@ -9,6 +8,7 @@ import { Success } from 'features/Success'
 import { useIsLoggedIn } from 'features/auth/useIsLoggedIn'
 import { PersonalSign } from 'features/sign/PersonalSign'
 import { Layout } from 'Layout'
+import { Home } from 'features/Home'
 
 export default function AppRouter() {
   const [isLoggedIn, isLoggedInLoading] = useIsLoggedIn()
