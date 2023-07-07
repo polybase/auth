@@ -36,6 +36,7 @@ export function EmailCodeRequest() {
             size='lg'
             autoFocus
             value={email}
+            aria-label='email-input'
             onChange={(e) => { setEmail(e.target.value) }}
           />
           <Button
