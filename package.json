@@ -16,13 +16,16 @@
     "pull:prod": "vercel env pull --environment production",
     "load": "ts-node ./scripts/create-schema.ts",
     "env": "env-cmd --no-override --file ${ENV_PATH:-.env}",
-    "fix": "eslint \"./src/**/*.{ts,tsx}\" webpack.config.js --fix"
+    "fix": "eslint \"./src/**/*.{ts,tsx}\" webpack.config.js --fix",
+    "test:ui": "npx playwright test",
+    "test:ui:report": "npx playwright show-report"
   },
   "dependencies": {
     "@chakra-ui/anatomy": "^2.1.0",
     "@chakra-ui/react": "^2.4.4",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@faker-js/faker": "^8.0.2",
     "@fontsource/inter": "^4.5.14",
     "@polybase/client": "^0.6.5",
     "@polybase/eth": "^0.6.5",
@@ -119,6 +122,7 @@
   },
   "devDependencies": {
     "@metamask/providers": "^10.2.1",
+    "@playwright/test": "^1.36.0",
     "@types/jest": "^29.2.4",
     "@types/js-cookie": "^3.0.2",
     "@types/jsonwebtoken": "^9.0.1",
