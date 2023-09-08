@@ -77,14 +77,14 @@ export function PersonalSign() {
 
   return (
     <Layout title='Personal Sign'>
-      <Stack spacing={6} h='full'>
+      <Stack spacing={6} h='80%'>
         <Loading center size='lg' loading={!error && authType === 'metamask'} />
         <Heading textAlign='center' fontSize='md' lineHeight={1.7} color='bw.600'>
           {error ? 'An error occurred, try again.' : 'The app is requesting for you to sign the following request.'}
         </Heading>
         {error && authType === 'metamask' && <Button onClick={metamaskSign}>Try Again</Button>}
         {authType !== 'metamask' && (
-          <Box flex='1 1 auto'>
+          <Box display='block' overflow='overlay' h= '45%' >
             <code>
               {msg}
             </code>
